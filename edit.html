@@ -13,17 +13,80 @@
       <a href="view.html">View Data</a>
     </nav>
   </header>
-  
-  <form>
-  <label for="category">What are you tracking?</label>
-  <br>
 
+  <form id="entryform">
+  <label for="category">What are you tracking?</label>
   <select id="category" name="category">
     <option value="">-- Select one --</option>
     <option value="workouts">Workouts</option>
     <option value="flights">Flights Taken</option>
   </select>
+
+  <br><br>
+
+  <label for="date">Date of the activity:</label>
+  <input type="date" id="date" name="date" required>
+
+  <br><br>
+  <!--this section is for workout only-->
+  <div id="where-question" style="display: none;">
+    <label for="where">Where did this workout take place?</label>
+    <input type="text" id="where" name="where" placeholder="Gym, Trail, ect." required>
+  </div>
+  <br><br>
+  <!--this section is for flights only-->
+  <div id="flight" style="display: none;">
+    <label for="from">Where are you flying from:</label>
+    <input type="text" id="from" name="from" placeholder="Where are you flying from?" required>
+    
+    <br><br>
+
+    <label for="to">Where are you flying to:</label>
+    <input type="text" id="to" name="to" placeholder="Where are you flying to?" required>
+
+    <br><br>
+
+  </div>
+  <button type="submit">Submit</button>
 </form>
-  
+
+<script>
+    const categoryEl = document.getElementById("category");
+    const flightFieldsEl = document.getElementById("flight");
+    const whereFieldEl = document.getElementById("where-question");
+    
+    const whereEl = document.getElementById("where");
+    const fromEl = document.getElementById("from");
+    const toEl = document.getElementById("to");
+
+    function updateFields() {
+      if (categoryEl.value === "flights") {
+        flightFieldsEl.style.display = "block";
+        fromEl.required = true;
+        toEl.required = true;
+      } else if (categoryEl.value === "workouts") {
+      flightFieldsEl.style.display = "none";
+      whereFieldEl.style.display = "block";
+
+      whereEl.required = true;
+      fromEl.required = false;
+      toEl.required = false;
+      fromEl.value = "";
+      toEl.value = "";
+
+    } else {
+      flightFieldsEl.style.display = "none";
+      whereFieldEl.style.display = "none";
+
+      whereEl.required = false;
+      fromEl.required = false;
+      toEl.required = false;
+    }
+  }
+
+    categoryEl.addEventListener("change", updateFields);
+    updateFields();
+  </script>
+ 
 </body>
 </html>
