@@ -60,27 +60,28 @@
     const toEl = document.getElementById("to");
 
     function updateFields() {
-      if (categoryEl.value === "flights") {
-        flightFieldsEl.style.display = "block";
-        fromEl.required = true;
-        toEl.required = true;
-      } else if (categoryEl.value === "workouts") {
-      flightFieldsEl.style.display = "none";
+      const selected = categoryEl.value;
+
+    flightFieldsEl.style.display = "none";
+    whereFieldEl.style.display = "none";
+
+    fromEl.required = false;
+    toEl.required = false;
+    whereEl.required = false;
+
+    fromEl.value = "";
+    toEl.value = "";
+    whereEl.value = "";
+
+    if (selected === "workouts") {
       whereFieldEl.style.display = "block";
-
       whereEl.required = true;
-      fromEl.required = false;
-      toEl.required = false;
-      fromEl.value = "";
-      toEl.value = "";
+    }
 
-    } else {
-      flightFieldsEl.style.display = "none";
-      whereFieldEl.style.display = "none";
-
-      whereEl.required = false;
-      fromEl.required = false;
-      toEl.required = false;
+    if (selected === "flights") {
+      flightFieldsEl.style.display = "block";
+      fromEl.required = true;
+      toEl.required = true;
     }
   }
 
