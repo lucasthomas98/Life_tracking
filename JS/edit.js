@@ -2,21 +2,20 @@
 
 const categoryEl = document.getElementById("category");
 const flightFieldsEl = document.getElementById("flight");
- const whereFieldEl = document.getElementById("where-question");
-    
+const whereFieldEl = document.getElementById("where-question");    
 const whereEl = document.getElementById("where");
 const fromEl = document.getElementById("from");
 const toEl = document.getElementById("to");
 const dateEl = document.getElementById("date");
 const formEl = document.getElementById("entryform");
-
+const submitBtn = document.getElementById("submit-btn");
 const storageKey = "lifeTrackerEntries";
 
 function getEntries() {
     return JSON.parse(localStorage.getItem(storageKey)) || [];
 }
-function saveEntry(entries) {
-    localStorage.setItem(storageKey, JSON.stringify(entry));
+function saveEntries(entries) {
+    localStorage.setItem(storageKey, JSON.stringify(entries));
 }
 function updateFields() {
     const selected = categoryEl.value;
@@ -69,9 +68,15 @@ formEl.addEventListener("submit", function (e) {
     }
     const entries = getEntries();
     entries.push(entry);
-    saveEntry(entries);
+    saveEntries(entries);
+    submitBtn.textContent = "Saved ✓";
+    submitBtn.disabled = true;
 
-    alert("Saved!");
+    setTimeout(() => {
+    submitBtn.textContent = "Submit";
+    submitBtn.disabled = false;
+}, 1500);
+    
     formEl.reset();
     updateFields();
 });

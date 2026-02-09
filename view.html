@@ -14,8 +14,30 @@
     </nav>
   </header>
 
-  <h2>Saved Data</h2>
-  <p>This page will display saved life tracking entries.</p>
+  <h2>Saved Entries</h2>
 
+  <section>
+    <label for="filter-date">Filter by date:</label>
+    <input type="date" id="filter-date">
+
+    <br><br>
+
+    <label for="filter-text">Search by place (gym/airport/city):</label>
+    <input
+      type="text"
+      id="filter-text"
+      placeholder="ex: Gold's, BOS, LAX, Denver..."
+    >
+
+    <br><br>
+
+    <button id="clear-filters" type="button">Clear</button>
+  </section>
+
+  <hr>
+
+  <div id="results"></div>
+
+  <script src="js/view.js"></script>
 </body>
 </html>
