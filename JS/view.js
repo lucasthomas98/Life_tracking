@@ -4,8 +4,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const filterDateEl = document.getElementById("filter-date");
   const filterTextEl = document.getElementById("filter-text");
   const clearBtn = document.getElementById("clear-filters");
-  
+  const statusEl = document.getElementById("status");
+
   let editingId = null;
+
+  function setStatus(msg) {
+    if (!statusEl) return;
+    statusEl.textContent = msg;
+    setTimeout(() => {
+      statusEl.textContent = "";
+    }, 2000);
+}
 
   function getEntries() {
     return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
@@ -113,7 +122,8 @@ return `
       })
       .join("");
     }
-    resultsEl.addEventListener("click", (e) => {
+    
+  resultsEl.addEventListener("click", (e) => {
     const btn = e.target.closest("button[data-action]");
     if (!btn) return;
 
@@ -124,9 +134,14 @@ return `
     const action = btn.dataset.action;
 
     if (action === "delete") {
+      const ok = confirm("Delete this entry?");
+      if (!ok) return;
+
       const updated = getEntries().filter((x) => x.id !== id);
       saveEntries(updated);
+      editingId = null;
       render();
+      setStatus("Deleted ✓");
       return;
     }
 
@@ -167,6 +182,7 @@ return `
 
       editingId = null;
       render();
+      setStatus("Updated ✓");
     }
   });
 
