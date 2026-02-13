@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const resultsEl = document.getElementById("results");
   const filterDateEl = document.getElementById("filter-date");
   const filterTextEl = document.getElementById("filter-text");
+  const filterCategoryEl = document.getElementById("filter-category");
   const clearBtn = document.getElementById("clear-filters");
   const statusEl = document.getElementById("status");
 
@@ -38,16 +39,26 @@ document.addEventListener("DOMContentLoaded", () => {
     return entry.date === date;
   }
 
+  function categoryMatch(entry, category) {
+  if (!category || category === "all") return true;
+  return entry.category === category;
+  }
+
   function render() {
     const entries = getEntries();
     const dateFilter = filterDateEl.value;
     const textFilter = filterTextEl.value.trim();
 
+    const categoryFilter = filterCategoryEl ? filterCategoryEl.value : "all";
+
     const filtered = entries
       .slice()
-      .sort((a, b) => (b.date || "").localeCompare(a.date || "")) // newest date first
-      .filter((e) => dateMatch(e, dateFilter) && textMatch(e, textFilter));
-
+      .sort((a, b) => (b.date || "").localeCompare(a.date || ""))
+      .filter((e) =>
+        dateMatch(e, dateFilter) &&
+        textMatch(e, textFilter) &&
+        categoryMatch(e, categoryFilter)
+    );
     if (filtered.length === 0) {
       resultsEl.innerHTML = "<p>No matching entries found.</p>";
       return;
@@ -186,12 +197,14 @@ return `
     }
   });
 
+  if (filterCategoryEl) filterCategoryEl.addEventListener("change", render);
   filterDateEl.addEventListener("change", render);
   filterTextEl.addEventListener("input", render);
 
   clearBtn.addEventListener("click", () => {
     filterDateEl.value = "";
     filterTextEl.value = "";
+    if (filterCategoryEl) filterCategoryEl.value = "all";
     render();
   });
 
